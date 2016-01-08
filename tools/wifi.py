@@ -7,10 +7,10 @@ import math
 class Wifi(Base):
     QUALITIES = ['A', 'B', 'C', 'D', 'E'][::-1]
 
-    def __init__(self, color, iface='wlp2s0'):
-        Base.__init__(self, color)
-        ifconfig = Popen(['ifconfig', iface], stdout=PIPE).stdout.read().decode().rstrip()
-        iwconfig = Popen(['iwconfig', iface], stdout=PIPE).stdout.read().decode().rstrip()
+    def __init__(self, cfg):
+        Base.__init__(self, cfg['color'])
+        ifconfig = Popen(['ifconfig', cfg['interface']], stdout=PIPE).stdout.read().decode().rstrip()
+        iwconfig = Popen(['iwconfig', cfg['interface']], stdout=PIPE).stdout.read().decode().rstrip()
         pattif = re.compile('inet (\d{1,3}.\d{1,3}.\d{1,3}.\d{1,3}).*?\((\d+).\d (\w+).*?\((\d+).\d (\w+)', re.I | re.M | re.S)
         pattiw = re.compile('ESSID:"(.*?)".*?Quality=(.*?)  Signal', re.I | re.M | re.S)
         ip, *downup = pattif.findall(ifconfig)[0]

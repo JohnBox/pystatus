@@ -3,9 +3,9 @@ from subprocess import Popen, PIPE
 
 
 class Time(Base):
-    def __init__(self, color, format='%d/%m %R'):
-        Base.__init__(self, color)
+    def __init__(self, cfg):
+        Base.__init__(self, cfg['color'])
         hour = int(Popen(['date', '+%H'], stdout=PIPE).stdout.read().decode().rstrip())
         if 0 < hour < 6:
             self.urgent = True
-        self.full_text = Popen(['date', '+'+format], stdout=PIPE).stdout.read().decode().rstrip()
+        self.full_text = Popen(['date', '+'+cfg['format']], stdout=PIPE).stdout.read().decode().rstrip()
