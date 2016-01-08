@@ -1,11 +1,11 @@
-from tools import base
+from tools import time
 from json import dumps
 from time import sleep
 
 VERSION = {'version': 1}
-b = base.Base('#444444')
+b = time.Time('#00AFF0')
 print(dumps(VERSION))
 print('[')
 while True:
-    print([b], end=',\n')
+    print([b, b], end=',\n')
     sleep(3)
