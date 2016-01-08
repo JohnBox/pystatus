@@ -1,4 +1,4 @@
-from tools import time, wifi
+from tools import time, wifi, sound
 from json import dumps
 from time import sleep
 
@@ -9,5 +9,6 @@ print('[')
 while True:
     t = time.Time('#00AFF0', '%T')
     w = wifi.Wifi('#0077B5')
-    print([w, t], end=',\n')
+    s = sound.Sound('#3F729B')
+    print([s, w, t], end=',\n')
     sleep(1)
