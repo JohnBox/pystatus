@@ -1,4 +1,4 @@
-from tools import time, wifi, sound, cputemp, vk
+from tools import time, wifi, sound, cputemp, vk, battery
 from config import Config
 from json import dumps
 from time import sleep
@@ -14,6 +14,7 @@ while True:
     w = wifi.Wifi(config.section('WIFI'))
     s = sound.Sound(config.section('SOUND'))
     c = cputemp.CpuTemp(config.section('CPUTEMP'))
+    b = battery.Battery(config.section('BATTERY'))
     v = vk.VK(config.section('VK'))
-    print([v, c, s, w, t], end=',\n')
+    print([v, b, c, s, w, t], end=',\n')
     sleep(interval)
