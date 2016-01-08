@@ -7,7 +7,7 @@ class Base:
         self.color = color
         self.urgent = urgent
         # self.min_width = 100
-        self.separator = False
+        self.separator = True
         self.separator_block_width = 29
 
     def __str__(self):

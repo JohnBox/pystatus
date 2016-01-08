@@ -1,4 +1,4 @@
-from tools import time, wifi, sound
+from tools import time, wifi, sound, cputemp
 from json import dumps
 from time import sleep
 
@@ -10,5 +10,6 @@ while True:
     t = time.Time('#00AFF0', '%T')
     w = wifi.Wifi('#0077B5')
     s = sound.Sound('#3F729B')
-    print([s, w, t], end=',\n')
+    c = cputemp.CpuTemp('#21759B')
+    print([c, s, w, t], end=',\n')
     sleep(1)
