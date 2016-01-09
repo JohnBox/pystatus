@@ -2,12 +2,12 @@
 from tools import time, wifi, sound, cputemp, vk, battery, ram
 from json import dumps
 from time import sleep
-from sys import exit, stderr
+from sys import exit, stderr, stdout
 from argparse import ArgumentParser
 from configparser import ConfigParser
 
 parser = ArgumentParser(description='Generate status line output for i3bar')
-parser.add_argument('-c', '--config', help='absolute path to the config file')
+parser.add_argument('-c', '--config', help='absolute path to the config file', default='./pystatus.ini')
 args = parser.parse_args()
 
 if args.config:
@@ -21,7 +21,7 @@ VERSION = {'version': 1}
 print(dumps(VERSION))
 print('[')
 
-interval = int(config['PYSTATUS']['interval'])
+interval = int(config['PYSTATUS']['refresh'])
 while True:
     t = time.Time(config['TIME'])
     w = wifi.Wifi(config['WIFI'])
@@ -31,3 +31,4 @@ while True:
     v = vk.VK(config['VK'])
     print([v, r, c, s, w, t], end=',\n')
     sleep(interval)
+    stdout.flush()

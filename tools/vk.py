@@ -12,18 +12,13 @@ class Singleton(type):
 
 
 class API(metaclass=Singleton):
-    api = None
-
     def __init__(self, cfg):
-        if not API.api:
-            session = vk.AuthSession(app_id=cfg['appid'],
-                                     user_login=cfg['login'],
-                                     user_password=cfg['passwd'],
-                                     scope=cfg['permission'])
-            API.api = vk.API(session, v=cfg['apiv'])
+            session = vk.AuthSession(app_id=cfg['appid'], user_login=cfg['login'],
+                                     user_password=cfg['passwd'], scope=cfg['permission'])
+            self.api = vk.API(session, v=cfg['apiv'])
 
     def __getattr__(self, name):
-        return getattr(API.api, name)
+        return getattr(self.api, name)
 
 
 class VK(Base):
@@ -41,9 +36,9 @@ class VK(Base):
                 messages = API(cfg).messages.getDialogs(unread=False)
                 count = int(messages['count'])
                 urgent = False
-                if any(map(lambda i: i['message']['user_id'] == cfg['importantid'], messages['items'])):
+                if any(map(lambda i: str(i['message']['user_id']) == cfg['importantid'], messages['items'])):
                     urgent = True
-                VK.skip = 5
+                VK.skip = cfg['refresh']
                 VK.count = count
                 VK.urgent = urgent
             self.urgent = urgent
