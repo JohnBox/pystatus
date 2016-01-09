@@ -30,22 +30,25 @@ class VK(Base):
     def __init__(self, cfg):
         Base.__init__(self, cfg['color'])
         try:
-            if VK.skip:
-                VK.skip -= 1
-            else:
-                raise Exception
-            count = VK.count
-            urgent = VK.urgent
+            try:
+                if VK.skip:
+                    VK.skip -= 1
+                else:
+                    raise Exception
+                count = VK.count
+                urgent = VK.urgent
+            except:
+                messages = API(cfg).messages.getDialogs(unread=False)
+                count = int(messages['count'])
+                urgent = False
+                if any(map(lambda i: i['message']['user_id'] == cfg['importantid'], messages['items'])):
+                    urgent = True
+                VK.skip = 5
+                VK.count = count
+                VK.urgent = urgent
+            self.urgent = urgent
+            self.full_text = '+{0:d}'.format(count) if count else ''
         except:
-            messages = API(cfg).messages.getDialogs(unread=False)
-            count = int(messages['count'])
-            urgent = False
-            if any(map(lambda i: i['message']['user_id'] == cfg['importantid'], messages['items'])):
-                urgent = True
-            VK.skip = 5
-            VK.count = count
-            VK.urgent = urgent
-        self.urgent = urgent
-        self.full_text = '+{0:d}'.format(count) if count else '__'
+            self.full_text = ''
 
 

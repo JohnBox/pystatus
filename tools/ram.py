@@ -1,6 +1,5 @@
 from .base import Base
 from subprocess import Popen, PIPE
-import re
 
 
 class RAM(Base):
@@ -9,6 +8,6 @@ class RAM(Base):
         mem = Popen(['free', '-h', '--si'], stdout=PIPE).stdout
         mem = Popen(['head', '-2'], stdin=mem, stdout=PIPE).stdout
         mem = Popen(['tail', '-1'], stdin=mem, stdout=PIPE).stdout.read().decode().rstrip()
-        mem = list(filter(bool, mem.split()))[2]
+        mem = list(filter(bool, mem.split()))[2].replace(',', '.')
         self.full_text = mem
 

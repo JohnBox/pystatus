@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 from tools import time, wifi, sound, cputemp, vk, battery, ram
 from config import Config
 from json import dumps
@@ -15,7 +16,6 @@ while True:
     s = sound.Sound(config.section('SOUND'))
     c = cputemp.CpuTemp(config.section('CPUTEMP'))
     r = ram.RAM(config.section('RAM'))
-    b = battery.Battery(config.section('BATTERY'))
     v = vk.VK(config.section('VK'))
-    print([v, b, r, c, s, w, t], end=',\n')
+    print([v, r, c, s, w, t], end=',\n')
     sleep(interval)

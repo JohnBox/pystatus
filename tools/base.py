@@ -3,7 +3,7 @@ from json import dumps
 
 class Base:
     def __init__(self, color='#EEEEEE', urgent=None):
-        self.full_text = ' *** '
+        self.full_text = '***'
         self.color = color
         self.urgent = urgent
         # self.min_width = 100
