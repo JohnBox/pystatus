@@ -1,21 +1,33 @@
 #!/usr/bin/env python
 from tools import time, wifi, sound, cputemp, vk, battery, ram
-from config import Config
 from json import dumps
 from time import sleep
+from sys import exit, stderr
+from argparse import ArgumentParser
+from configparser import ConfigParser
+
+parser = ArgumentParser(description='Generate status line output for i3bar')
+parser.add_argument('-c', '--config', help='absolute path to the config file')
+args = parser.parse_args()
+
+if args.config:
+    config = ConfigParser()
+    config.read(args.config)
+else:
+    parser.print_usage(file=stderr)
+    exit(1)
 
 VERSION = {'version': 1}
 print(dumps(VERSION))
 print('[')
 
-config = Config('/home/gott/PycharmProjects/pystatus/pystatus.ini')
-interval = int(config.section('PYSTATUS')['interval'])
+interval = int(config['PYSTATUS']['interval'])
 while True:
-    t = time.Time(config.section('TIME'))
-    w = wifi.Wifi(config.section('WIFI'))
-    s = sound.Sound(config.section('SOUND'))
-    c = cputemp.CpuTemp(config.section('CPUTEMP'))
-    r = ram.RAM(config.section('RAM'))
-    v = vk.VK(config.section('VK'))
+    t = time.Time(config['TIME'])
+    w = wifi.Wifi(config['WIFI'])
+    s = sound.Sound(config['SOUND'])
+    c = cputemp.CpuTemp(config['CPUTEMP'])
+    r = ram.RAM(config['RAM'])
+    v = vk.VK(config['VK'])
     print([v, r, c, s, w, t], end=',\n')
     sleep(interval)

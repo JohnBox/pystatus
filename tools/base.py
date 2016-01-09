@@ -2,11 +2,10 @@ from json import dumps
 
 
 class Base:
-    def __init__(self, color='#EEEEEE', urgent=None):
+    def __init__(self, color='#EEEEEE'):
         self.full_text = '***'
         self.color = color
-        self.urgent = urgent
-        # self.min_width = 100
+        self.urgent = False
         self.separator = True
         self.separator_block_width = 14
 
