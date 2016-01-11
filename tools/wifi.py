@@ -6,21 +6,24 @@ from time import sleep
 
 
 class Wifi(Base):
-    QUALITIES = ['A', 'B', 'C', 'D', 'E'][::-1]
+    QUALITIES = ['E', 'D', 'C', 'B', 'A']
 
     def __init__(self, cfg):
         Base.__init__(self, cfg['color'])
         try:
             ifconfig = Popen(['ifconfig', cfg['interface']], stdout=PIPE).stdout.read().decode().rstrip()
+            downupre = re.compile('\((\d.+?)\)', re.M)
+            ipre = re.compile('inet (\d{1,3}.\d{1,3}.\d{1,3}.\d{1,3})')
+            down, up = downupre.findall(ifconfig)
+            down, up = down.replace('iB', '').replace(' ', ''), up.replace('iB', '').replace(' ', '')
+            ip = ipre.search(ifconfig).group(1)
             iwconfig = Popen(['iwconfig', cfg['interface']], stdout=PIPE).stdout.read().decode().rstrip()
-            pattif = re.compile('inet (\d{1,3}.\d{1,3}.\d{1,3}.\d{1,3}).*?\((\d+).\d (\w+).*?\((\d+).\d (\w+)', re.I | re.M | re.S)
-            pattiw = re.compile('ESSID:"(.*?)".*?Quality=(.*?)  Signal', re.I | re.M | re.S)
-            ip, *downup = pattif.findall(ifconfig)[0]
-            down = downup[0] + downup[1].replace('iB', '')
-            up = downup[2] + downup[3].replace('iB', '')
-            ssid, quality = pattiw.findall(iwconfig)[0]
+            ssidre = re.compile('"(.+?)"')
+            ssid = ssidre.search(iwconfig).group(1)
+            qualityre = re.compile('(\d{1,2}/\d{2})')
+            quality = qualityre.search(iwconfig).group(1)
             quality = math.floor(eval(quality)*5-1)
             quality = Wifi.QUALITIES[quality]
-            self.full_text = '%s [%s] %s' % (ssid, quality, down)
+            self.full_text = '%(ssid)s [%(quality)s] %(down)s' % locals()
         except:
             pass

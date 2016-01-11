@@ -12,6 +12,6 @@ class Sound(Base):
         else:
             amixer = ['amixer', '-c', '0', 'get', 'Master']
         sndcard = Popen(amixer, stdout=PIPE).stdout.read().decode().rstrip()
-        pattsnd = re.compile('\[(.*?)\]', re.I | re.M | re.S)
-        volume, _, mute, *_ = pattsnd.findall(sndcard)
-        self.full_text = '__' if mute == 'off' else volume
+        sndre = re.compile('\[(.*?)\]', re.M)
+        volume, _, mute, *_ = sndre.findall(sndcard)
+        self.full_text = '__' if mute == 'off' else '%(volume)s' % locals()
