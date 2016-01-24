@@ -30,6 +30,10 @@ while True:
     c = cputemp.CpuTemp(config['CPUTEMP'])
     r = ram.RAM(config['RAM'])
     v = vk.VK(config['VK'])
-    print([v, r, c, s, w, b, t], end=',\n')
+    if b.ac == 'off':
+        panel = [v, r, c, s, w, b, t]
+    else:
+        panel = [v, r, c, s, w, t]
+    print(panel, end=',\n')
     sleep(interval)
     stdout.flush()
