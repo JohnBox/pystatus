@@ -11,8 +11,8 @@ class Base:
 
     def __str__(self):
         self.full_text = ' ' + self.full_text + ' '
-        return dumps(self.__dict__)
+        return dumps(vars(self))
 
     def __repr__(self):
         self.full_text = ' ' + self.full_text + ' '
-        return dumps(self.__dict__)
+        return dumps(vars(self))
