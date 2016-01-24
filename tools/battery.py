@@ -13,9 +13,8 @@ class Battery(Base):
         ac = acre.search(ac).group(1)
         if ac == 'off':
             self.urgent = True
-            self.full_text = 'AC'
-        else:
-            bat = Popen(['acpi', '-b'], stdout=PIPE).stdout.read().decode().rstrip()
-            batre = re.compile('(\d{1,3})%')
-            bat = int(batre.search(bat).group(1))//10
-            self.full_text = Battery.BATTERY[bat]
+        bat = Popen(['acpi', '-b'], stdout=PIPE).stdout.read().decode().rstrip()
+        batre = re.compile('(\d{1,3})%')
+        bat = int(batre.search(bat).group(1))
+        bat = bat-1 if bat else bat
+        self.full_text = Battery.BATTERY[bat//len(Battery.BATTERY)]
