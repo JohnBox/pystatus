@@ -4,7 +4,7 @@ from subprocess import Popen, PIPE
 
 class Time(Base):
     def __init__(self, cfg):
-        Base.__init__(self, cfg['color'])
+        super().__init__(cfg)
         hour = int(Popen(['date', '+%H'], stdout=PIPE).stdout.read().decode().rstrip())
         if 0 <= hour < 6:
             self.urgent = True

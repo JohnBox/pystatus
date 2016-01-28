@@ -24,16 +24,16 @@ print('[')
 interval = int(config['PYSTATUS']['refresh'])
 while True:
     t = time.Time(config['TIME'])
-    b = battery.Battery(config['BATTERY'])
-    w = wifi.Wifi(config['WIFI'])
-    s = sound.Sound(config['SOUND'])
-    c = cputemp.CpuTemp(config['CPUTEMP'])
-    r = ram.RAM(config['RAM'])
-    v = vk.VK(config['VK'])
-    if b.ac == 'off':
-        panel = [v, r, c, s, w, b, t]
-    else:
-        panel = [v, r, c, s, w, t]
-    print(panel, end=',\n')
+    # b = battery.Battery(config['BATTERY'])
+    # w = wifi.Wifi(config['WIFI'])
+    # s = sound.Sound(config['SOUND'])
+    # c = cputemp.CpuTemp(config['CPUTEMP'])
+    # r = ram.RAM(config['RAM'])
+    # v = vk.VK(config['VK'])
+    # if b.ac == 'off':
+    #     panel = [v, r, c, s, w, b, t]
+    # else:
+    #     panel = [v, r, c, s, w, t]
+    print([t], end=',\n')
     sleep(interval)
     stdout.flush()
