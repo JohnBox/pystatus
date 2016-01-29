@@ -10,29 +10,32 @@ class Wifi(Base):
 
     def __init__(self, cfg):
         super().__init__(cfg)
+
+        self.downup_re = re.compile('\((\d.+?)\)', re.M)
+        self.ip_re = re.compile('inet (\d{1,3}.\d{1,3}.\d{1,3}.\d{1,3})')
+        self.ssid_re = re.compile('"(.+?)"')
+        self.quality_re = re.compile('(\d{1,2}/\d{2})')
         self.refresh()
 
     def refresh(self):
         try:
             ifconfig = Popen(['ifconfig', self.cfg['interface']], stdout=PIPE).stdout.read().decode().rstrip()
-            downup_re = re.compile('\((\d.+?)\)', re.M)
-            ipre = re.compile('inet (\d{1,3}.\d{1,3}.\d{1,3}.\d{1,3})')
-            down, up = downup_re.findall(ifconfig)
-            down, up = down.replace('iB', '').replace(' ', ''), up.replace('iB', '').replace(' ', '')
-            ip = ipre.search(ifconfig).group(1)
+            self.down, self.up = self.downup_re.findall(ifconfig)
+            self.down, self.up = self.down.replace('iB', '').replace(' ', ''), self.up.replace('iB', '').replace(' ', '')
+            self.ip = self.ip_re.search(ifconfig).group(1)
+
             iwconfig = Popen(['iwconfig', self.cfg['interface']], stdout=PIPE).stdout.read().decode().rstrip()
-            ssidre = re.compile('"(.+?)"')
-            ssid = ssidre.search(iwconfig).group(1)
-            quality_re = re.compile('(\d{1,2}/\d{2})')
-            quality = quality_re.search(iwconfig).group(1)
-            quality = math.floor(eval(quality)*5-1)
-            quality = Wifi.QUALITIES[quality]
+            self.ssid = self.ssid_re.search(iwconfig).group(1)
+            self.quality = self.quality_re.search(iwconfig).group(1)
+            self.quality = math.floor(eval(self.quality)*len(Wifi.QUALITIES)-1)
+            self.quality = Wifi.QUALITIES[self.quality]
+
             params = {
-                'down': down,
-                'up': up,
-                'ip': ip,
-                'ssid': ssid,
-                'quality': quality
+                'down': self.down,
+                'up': self.up,
+                'ip': self.ip,
+                'ssid': self.ssid,
+                'quality': self.quality
             }
             self.full_text = self.cfg['format'] % params
         except:
