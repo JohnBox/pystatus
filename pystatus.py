@@ -14,14 +14,15 @@ def main():
     VERSION = {'version': 1}
     print(dumps(VERSION))
     print('[')
-    interval = int(cfg['PYSTATUS']['refresh'])
+    interval = float(cfg['PYSTATUS']['refresh'])
     panel = OrderedDict()
     panel['time'] = time.Time(cfg['TIME'])
+    panel['battery'] = battery.Battery(cfg['BATTERY'])
+    panel['sound'] = sound.Sound(cfg['SOUND'])
     panel['wifi'] = wifi.Wifi(cfg['WIFI'])
     panel['cputemp'] = cputemp.CpuTemp(cfg['CPUTEMP'])
     panel['ram'] = ram.RAM(cfg['RAM'])
-    # b = battery.Battery(config['BATTERY'])
-    # s = sound.Sound(config['SOUND'])
+
 
     # v = vk.VK(config['VK'])
     while True:

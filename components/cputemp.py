@@ -7,12 +7,16 @@ import re
 class CpuTemp(Base):
     def __init__(self, cfg):
         Base.__init__(self, cfg)
+        # check installed lm_sensors
         if check_call('sensors', stdout=DEVNULL) == 0:
             self.command = ['sensors', '-A', 'coretemp-isa-0000']
             self.temp_re = re.compile('Physical id 0:\W{3}(\d{2})')
-        else:
+        # check installed acpi
+        elif check_call('acpi', stdout=DEVNULL) == 0:
             self.command = ['acpi', '-t']
             self.temp_re = re.compile('(\d{2})')
+        else:
+            raise Exception("Not installed acpi or lm_sensors")
         self.refresh()
 
     def refresh(self):

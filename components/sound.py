@@ -5,7 +5,10 @@ import re
 
 class Sound(Base):
     def __init__(self, cfg):
-        Base.__init__(self, cfg['color'])
+        super().__init__(cfg)
+        self.refresh()
+
+    def refresh(self):
         internal = call('amixer -c 1', shell=True, stdout=PIPE, stderr=PIPE)
         if not internal:
             amixer = ['amixer', '-c', '1', 'get', 'PCM']

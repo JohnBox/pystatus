@@ -1,6 +1,5 @@
 from components import wifi
 from tests import base
-from tools import config
 
 import unittest
 

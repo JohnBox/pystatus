@@ -13,10 +13,10 @@ class Base:
     def __init__(self, cfg):
         self.cfg = cfg
         self.text = '***'
-        self.color = cfg.get('color', '#EEEEEE')
+        self.color = cfg.get('color', '#0C99D5')
         self.urgent = False
         self.separator = True
-        self.separator_block_width = 14
+        self.separator_block_width = 9
         self.visible = True
 
     def __str__(self):
