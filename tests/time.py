@@ -14,7 +14,9 @@ class TestTime(unittest.TestCase):
 
     def test_time(self):
         from datetime import datetime
-        self.assertEqual(datetime.now().time().s, self.time.full_text)
+        from locale import setlocale, LC_TIME
+        setlocale(LC_TIME, 'uk_UA')
+        self.assertEqual(datetime.now().strftime('%a %d/%m %R'), self.time.full_text)
 
 if __name__ == '__main__':
     unittest.main()
