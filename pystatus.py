@@ -17,19 +17,16 @@ def main():
     interval = int(cfg['PYSTATUS']['refresh'])
     panel = OrderedDict()
     panel['time'] = time.Time(cfg['TIME'])
+    panel['wifi'] = wifi.Wifi(cfg['WIFI'])
+    # b = battery.Battery(config['BATTERY'])
+    # s = sound.Sound(config['SOUND'])
+    # c = cputemp.CpuTemp(config['CPUTEMP'])
+    # r = ram.RAM(config['RAM'])
+    # v = vk.VK(config['VK'])
     while True:
-        # b = battery.Battery(config['BATTERY'])
-        # w = wifi.Wifi(config['WIFI'])
-        # s = sound.Sound(config['SOUND'])
-        # c = cputemp.CpuTemp(config['CPUTEMP'])
-        # r = ram.RAM(config['RAM'])
-        # v = vk.VK(config['VK'])
-        # if b.ac == 'off':
-        #     panel = [v, r, c, s, w, b, t]
-        # else:
-        #     panel = [v, r, c, s, w, t]
-        for item in panel:
-            print([panel[item]], end=',\n')
+        visibled = list(filter(lambda i: i.visible, reversed(panel.values())))
+        print(visibled, end=',\n')
+        list(map(lambda i: i.refresh(), panel.values()))
         sleep(interval)
         stdout.flush()
 

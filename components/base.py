@@ -11,6 +11,7 @@ class Base:
         self.text = value
 
     def __init__(self, cfg):
+        self.cfg = cfg
         self.text = '***'
         self.color = cfg.get('color', '#EEEEEE')
         self.urgent = False
