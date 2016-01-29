@@ -22,9 +22,7 @@ def main():
     panel['wifi'] = wifi.Wifi(cfg['WIFI'])
     panel['cputemp'] = cputemp.CpuTemp(cfg['CPUTEMP'])
     panel['ram'] = ram.RAM(cfg['RAM'])
-
-
-    # v = vk.VK(config['VK'])
+    panel['vk'] = vk.VK(cfg['VK'])
     while True:
         visibled = list(filter(lambda i: i.visible, reversed(panel.values())))
         print(visibled, end=',\n')

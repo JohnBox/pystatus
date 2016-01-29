@@ -23,27 +23,25 @@ class API(metaclass=Singleton):
 
 class VK(Base):
     def __init__(self, cfg):
-        Base.__init__(self, cfg['color'])
+        super().__init__(cfg)
+        self.count = None
+        self.refresh()
+
+    def refresh(self):
         try:
-            try:
-                if VK.skip:
-                    VK.skip -= 1
-                else:
-                    raise Exception
-                count = VK.count
-                urgent = VK.urgent
-            except:
-                messages = API(cfg).messages.getDialogs(unread=False)
-                count = int(messages['count'])
-                urgent = False
-                if any(map(lambda i: str(i['message']['user_id']) == cfg['importantid'], messages['items'])):
-                    urgent = True
-                VK.skip = cfg['refresh']
-                VK.count = count
-                VK.urgent = urgent
-            self.urgent = urgent
-            self.full_text = '+{0:d}'.format(count) if count else ''
-        except:
+            messages = API(self.cfg).messages.getDialogs(unread=False)
+            self.count = int(messages['count'])
+            self.urgent = False
+            if any(map(lambda i: str(i['message']['user_id']) == self.cfg['importantid'], messages['items'])):
+                self.urgent = True
+
+            if self.count:
+                self.visible = True
+                self.full_text = '+{0:d}'.format(self.count)
+            else:
+                self.visible = False
+        except Exception as e:
+            print(e)
             self.full_text = ''
 
 
