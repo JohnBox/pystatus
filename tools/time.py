@@ -1,11 +1,13 @@
 from .base import Base
-from subprocess import Popen, PIPE
+from locale import setlocale, LC_TIME
+from datetime import datetime
 
 
 class Time(Base):
     def __init__(self, cfg):
         super().__init__(cfg)
-        hour = Popen(['date', '+%H'], stdout=PIPE).stdout.read().decode().rstrip()
+        setlocale(LC_TIME, 'uk_UA')
+        hour = datetime.now().strftime('%H')
         if int(cfg['sleep']) <= int(hour) < int(cfg['wakeup']):
             self.urgent = True
-        self.full_text = Popen(['date', '+'+cfg['format']], stdout=PIPE).stdout.read().decode().rstrip()
+        self.full_text = datetime.now().strftime(cfg['format'])

@@ -1,10 +1,11 @@
 #!/usr/bin/env python
 from tools import time, wifi, sound, cputemp, vk, battery, ram
-import config
 from json import dumps
 from time import sleep
 from sys import stdout
+from collections import OrderedDict
 
+import config
 
 def main():
     cfg = config.config('/home/gott/PycharmProjects/pystatus/pystatus.ini')
@@ -12,8 +13,9 @@ def main():
     print(dumps(VERSION))
     print('[')
     interval = int(cfg['PYSTATUS']['refresh'])
+    panel = OrderedDict()
+    panel['time'] = time.Time(cfg['TIME'])
     while True:
-        t = time.Time(cfg['TIME'])
         # b = battery.Battery(config['BATTERY'])
         # w = wifi.Wifi(config['WIFI'])
         # s = sound.Sound(config['SOUND'])
@@ -24,7 +26,8 @@ def main():
         #     panel = [v, r, c, s, w, b, t]
         # else:
         #     panel = [v, r, c, s, w, t]
-        print([t], end=',\n')
+        for item in panel:
+            print([panel[item]], end=',\n')
         sleep(interval)
         stdout.flush()
 
