@@ -1,13 +1,14 @@
 from components import cputemp
+from tests import base
 from tools import config
 
 import subprocess as sp
 import unittest
 
 
-class TestCpuTemp(unittest.TestCase):
+class TestCpuTemp(base.TestBase):
     def setUp(self):
-        self.cfg = config.config('/home/gott/PycharmProjects/pystatus/pystatus.ini')
+        super().setUp()
         self.cputemp = cputemp.CpuTemp(self.cfg['CPUTEMP'])
 
     def test_sensors(self):

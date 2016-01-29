@@ -1,12 +1,13 @@
-from tools import config
 from components import wifi
+from tests import base
+from tools import config
 
 import unittest
 
 
-class TestWifi(unittest.TestCase):
+class TestWifi(base.TestBase):
     def setUp(self):
-        self.cfg = config.config('/home/gott/PycharmProjects/pystatus/pystatus.ini')
+        super().setUp()
         self.wifi = wifi.Wifi(self.cfg['WIFI'])
 
     def test_config(self):

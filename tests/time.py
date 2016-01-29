@@ -1,12 +1,13 @@
 from components import time
+from tests import base
 from tools import config
 
 import unittest
 
 
-class TestTime(unittest.TestCase):
+class TestTime(base.TestBase):
     def setUp(self):
-        self.cfg = config.config('/home/gott/PycharmProjects/pystatus/pystatus.ini')
+        super().setUp()
         self.time = time.Time(self.cfg['TIME'])
 
     def test_config(self):

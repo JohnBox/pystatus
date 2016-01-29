@@ -19,9 +19,10 @@ def main():
     panel['time'] = time.Time(cfg['TIME'])
     panel['wifi'] = wifi.Wifi(cfg['WIFI'])
     panel['cputemp'] = cputemp.CpuTemp(cfg['CPUTEMP'])
+    panel['ram'] = ram.RAM(cfg['RAM'])
     # b = battery.Battery(config['BATTERY'])
     # s = sound.Sound(config['SOUND'])
-    # r = ram.RAM(config['RAM'])
+
     # v = vk.VK(config['VK'])
     while True:
         visibled = list(filter(lambda i: i.visible, reversed(panel.values())))
