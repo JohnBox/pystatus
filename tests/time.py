@@ -1,5 +1,5 @@
-from tools import time
-from pystatus import config
+from components import time
+from tools import config
 
 import unittest
 
@@ -16,7 +16,7 @@ class TestTime(unittest.TestCase):
         from datetime import datetime
         from locale import setlocale, LC_TIME
         setlocale(LC_TIME, 'uk_UA')
-        self.assertEqual(datetime.now().strftime('%a %d/%m %R'), self.time.full_text)
+        self.assertEqual(datetime.now().strftime('%a %d/%m %R'), self.time.text)
 
 if __name__ == '__main__':
     unittest.main()
