@@ -12,7 +12,7 @@ class Base:
 
     def __init__(self, cfg):
         self.cfg = cfg
-        self.text = '***'
+        self._text = '***'
         self.color = cfg.get('color', '#0C99D5')
         self.urgent = False
         self.separator = True

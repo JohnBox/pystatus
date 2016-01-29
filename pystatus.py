@@ -13,7 +13,7 @@ def main():
     VERSION = {'version': 1}
     print(dumps(VERSION))
     print('[')
-    interval = float(cfg['PYSTATUS']['refresh'])
+    interval = float(cfg['PYSTATUS'].get('refresh', '1'))
     panel = OrderedDict()
     panel['time'] = time.Time(cfg['TIME'])
     panel['battery'] = battery.Battery(cfg['BATTERY'])

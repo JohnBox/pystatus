@@ -1,4 +1,6 @@
 from .base import Base
+from tools import cache
+
 import vk
 
 
@@ -27,6 +29,7 @@ class VK(Base):
         self.count = None
         self.refresh()
 
+    @cache.Cache(times=30)
     def refresh(self):
         try:
             messages = API(self.cfg).messages.getDialogs(unread=False)

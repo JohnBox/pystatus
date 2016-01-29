@@ -1,6 +1,6 @@
 from .base import Base
-from locale import setlocale, LC_TIME
 from datetime import datetime
+from locale import setlocale, LC_TIME
 
 
 class Time(Base):
