@@ -18,9 +18,9 @@ def main():
     panel = OrderedDict()
     panel['time'] = time.Time(cfg['TIME'])
     panel['wifi'] = wifi.Wifi(cfg['WIFI'])
+    panel['cputemp'] = cputemp.CpuTemp(cfg['CPUTEMP'])
     # b = battery.Battery(config['BATTERY'])
     # s = sound.Sound(config['SOUND'])
-    # c = cputemp.CpuTemp(config['CPUTEMP'])
     # r = ram.RAM(config['RAM'])
     # v = vk.VK(config['VK'])
     while True:
