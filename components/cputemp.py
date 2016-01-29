@@ -6,7 +6,7 @@ import re
 
 class CpuTemp(Base):
     def __init__(self, cfg):
-        Base.__init__(self, cfg)
+        super().__init__(cfg)
         # check installed lm_sensors
         if check_call('sensors', stdout=DEVNULL) == 0:
             self.command = ['sensors', '-A', 'coretemp-isa-0000']
@@ -23,6 +23,10 @@ class CpuTemp(Base):
         self.temp = Popen(self.command, stdout=PIPE).stdout.read().decode().rstrip()
         self.temp = self.temp_re.search(self.temp).group(1)
 
-        if int(self.temp) > int(self.cfg['dangerous']):
+        if int(self.temp) > int(self.cfg.get('dangerous', '80')):
             self.urgent = True
-        self.full_text = '%s°C' % self.temp
+
+        params = {
+            'temp': self.temp
+        }
+        self.full_text = self.cfg.get('format', '%(temp)s') % params

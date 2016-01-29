@@ -39,7 +39,7 @@ class Battery(Base):
             'ac': self.ac
         }
 
-        self.full_text = self.cfg['format'] % params
+        self.full_text = self.cfg.get('format', '%(ac)s') % params
 
         if self.ac == 'off':
             self.urgent = True

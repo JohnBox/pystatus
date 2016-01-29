@@ -19,12 +19,12 @@ class Wifi(Base):
 
     def refresh(self):
         try:
-            ifconfig = Popen(['ifconfig', self.cfg['interface']], stdout=PIPE).stdout.read().decode().rstrip()
+            ifconfig = Popen(['ifconfig', self.cfg.get('interface', 'wlp2s0')], stdout=PIPE).stdout.read().decode().rstrip()
             self.down, self.up = self.downup_re.findall(ifconfig)
             self.down, self.up = self.down.replace('iB', '').replace(' ', ''), self.up.replace('iB', '').replace(' ', '')
             self.ip = self.ip_re.search(ifconfig).group(1)
 
-            iwconfig = Popen(['iwconfig', self.cfg['interface']], stdout=PIPE).stdout.read().decode().rstrip()
+            iwconfig = Popen(['iwconfig', self.cfg.get('interface', 'wlp2s0')], stdout=PIPE).stdout.read().decode().rstrip()
             self.ssid = self.ssid_re.search(iwconfig).group(1)
             self.quality = self.quality_re.search(iwconfig).group(1)
             self.quality = math.floor(eval(self.quality)*len(Wifi.QUALITIES)-1)
@@ -37,6 +37,6 @@ class Wifi(Base):
                 'ssid': self.ssid,
                 'quality': self.quality
             }
-            self.full_text = self.cfg['format'] % params
+            self.full_text = self.cfg.get('format', '%(ssid)s %(quality)s %(ip)s') % params
         except:
             pass

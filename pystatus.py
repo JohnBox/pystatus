@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-from components import time, wifi, sound, cputemp, vk, battery, ram
+from components import time, wifi, sound, cputemp, cpufan, vk, battery, ram
 from json import dumps
 from time import sleep
 from sys import stdout
@@ -9,7 +9,6 @@ from tools import parser
 
 
 def main():
-    # cfg = parser.parse('/home/gott/PycharmProjects/pystatus/pystatus.ini')
     cfg = parser.parse('./pystatus.ini')
     VERSION = {'version': 1}
     print(dumps(VERSION))
@@ -21,6 +20,7 @@ def main():
     panel['sound'] = sound.Sound(cfg['SOUND'])
     panel['wifi'] = wifi.Wifi(cfg['WIFI'])
     panel['cputemp'] = cputemp.CpuTemp(cfg['CPUTEMP'])
+    panel['cpufan'] = cpufan.CpuFan(cfg['CPUFAN'])
     panel['ram'] = ram.RAM(cfg['RAM'])
     panel['vk'] = vk.VK(cfg['VK'])
     while True:

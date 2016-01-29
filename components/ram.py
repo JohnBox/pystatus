@@ -19,5 +19,5 @@ class RAM(Base):
         params = dict(zip(params_name, mems))
         for p in params:
             self.__dict__[p] = params[p]
-        self.full_text = self.cfg['format'] % params
+        self.full_text = self.cfg.get('format', '%(used)s/%(total)s') % params
 

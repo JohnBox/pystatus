@@ -4,11 +4,11 @@ from json import dumps
 class Base:
     @property
     def full_text(self):
-        return ' ' + self.text + ' '
+        return ' ' + self._text + ' '
 
     @full_text.setter
     def full_text(self, value):
-        self.text = value
+        self._text = value
 
     def __init__(self, cfg):
         self.cfg = cfg

@@ -11,6 +11,6 @@ class Time(Base):
 
     def refresh(self):
         hour = datetime.now().strftime('%H')
-        if int(self.cfg['sleep']) <= int(hour) < int(self.cfg['wakeup']):
+        if int(self.cfg.get('sleep', '0')) <= int(hour) < int(self.cfg.get('wakeup', '6')):
             self.urgent = True
-        self.full_text = datetime.now().strftime(self.cfg['format'])
+        self.full_text = datetime.now().strftime(self.cfg.get('format', '%R'))
