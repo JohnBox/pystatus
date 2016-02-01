@@ -21,6 +21,8 @@ class CpuFan(Base):
     def refresh(self):
         self.fan = Popen(self.command, stdout=PIPE).stdout.read().decode().rstrip()
         self.fan = self.fan_re.search(self.fan).group(1)
+        if self.cfg.get('show_thousand', 'False') == 'True':
+            self.fan = str(int(self.fan) / 1000) + 'K'
         params = {
             'rpm': self.fan
         }
