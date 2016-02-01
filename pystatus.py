@@ -30,7 +30,7 @@ def main():
         list(map(lambda i: i.refresh(), panel.values()))
         late = t.time() - start
 
-        sleep((interval - late) if (interval - late) < 0 else interval)
+        sleep((interval - late) if (interval - late) > 0 else interval)
         stdout.flush()
 
 if __name__ == '__main__':
