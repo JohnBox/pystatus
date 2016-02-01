@@ -6,6 +6,7 @@ import string
 
 
 class Battery(Base):
+    BATTERY = ['', '', '', '', '']
 
     def __init__(self, cfg):
         super().__init__(cfg)
@@ -18,10 +19,17 @@ class Battery(Base):
 
         # remove line head and split battery values
         self.battery = [i.strip() for i in re.sub('Battery \d: ', '', self.battery).split(',')]
-
         self.status, self.capacity = self.battery[:2]
-        self.battery = self.battery[2:]
 
+        # remove last percent symbol
+
+        if self.cfg.get('icon_capacity', 'False') == 'True':
+            self.capacity = int(self.capacity[:-1])
+            self.capacity //= 20
+            self.capacity -= 1 if self.capacity > 0 else 0
+            self.capacity = Battery.BATTERY[self.capacity]
+
+        self.battery = self.battery[2:]
         # has time of charging or discharging
         if self.battery:
             # stay only time
@@ -48,7 +56,7 @@ class Battery(Base):
 
         if self.cfg.get('show_ac', 'False') == 'True':
             if self.ac == 'off':
-                self.full_text = 'AC'
+                self.full_text = ''
                 self.visible = True
             else:
                 self.visible = False

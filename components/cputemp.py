@@ -25,6 +25,8 @@ class CpuTemp(Base):
 
         if int(self.temp) > int(self.cfg.get('dangerous', '80')):
             self.urgent = True
+        else:
+            self.urgent = False
 
         params = {
             'temp': self.temp

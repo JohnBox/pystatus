@@ -6,7 +6,7 @@ from sys import stdout
 from collections import OrderedDict
 
 from tools import parser
-
+import time as t
 
 def main():
     cfg = parser.parse('./pystatus.ini')
@@ -24,10 +24,13 @@ def main():
     panel['ram'] = ram.RAM(cfg['RAM'])
     panel['vk'] = vk.VK(cfg['VK'])
     while True:
+        start = t.time()
         visibled = list(filter(lambda i: i.visible, reversed(panel.values())))
         print(visibled, end=',\n')
         list(map(lambda i: i.refresh(), panel.values()))
-        sleep(interval)
+        late = t.time() - start
+
+        sleep((interval - late) if (interval - late) < 0 else interval)
         stdout.flush()
 
 if __name__ == '__main__':
