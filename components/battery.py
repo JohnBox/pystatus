@@ -56,7 +56,7 @@ class Battery(Base):
 
         if self.cfg.get('show_ac', 'False') == 'True':
             if self.ac == 'off':
-                self.full_text = ''
+                self.full_text = ''
                 self.visible = True
             else:
                 self.visible = False

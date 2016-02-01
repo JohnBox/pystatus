@@ -1,7 +1,9 @@
 from .base import Base
 from subprocess import Popen, PIPE
-import re
+from sys import stderr
+
 import math
+import re
 from time import sleep
 
 
@@ -20,23 +22,28 @@ class Wifi(Base):
     def refresh(self):
         try:
             ifconfig = Popen(['ifconfig', self.cfg.get('interface', 'wlp2s0')], stdout=PIPE).stdout.read().decode().rstrip()
-            self.down, self.up = self.downup_re.findall(ifconfig)
-            self.down, self.up = self.down.replace('iB', '').replace(' ', ''), self.up.replace('iB', '').replace(' ', '')
-            self.ip = self.ip_re.search(ifconfig).group(1)
+            self.ip = self.ip_re.search(ifconfig)
+            if self.ip:
+                self.ip = self.ip.group(1)
+                self.down, self.up = self.downup_re.findall(ifconfig)
+                self.down, self.up = self.down.replace('iB', '').replace(' ', ''), self.up.replace('iB', '').replace(' ', '')
 
-            iwconfig = Popen(['iwconfig', self.cfg.get('interface', 'wlp2s0')], stdout=PIPE).stdout.read().decode().rstrip()
-            self.ssid = self.ssid_re.search(iwconfig).group(1)
-            self.quality = self.quality_re.search(iwconfig).group(1)
-            self.quality = math.floor(eval(self.quality)*len(Wifi.QUALITIES)-1)
-            self.quality = Wifi.QUALITIES[self.quality]
+                iwconfig = Popen(['iwconfig', self.cfg.get('interface', 'wlp2s0')], stdout=PIPE).stdout.read().decode().rstrip()
+                self.ssid = self.ssid_re.search(iwconfig).group(1)
+                self.quality = self.quality_re.search(iwconfig).group(1)
+                self.quality = math.floor(eval(self.quality)*len(Wifi.QUALITIES)-1)
+                self.quality = Wifi.QUALITIES[self.quality]
 
-            params = {
-                'down': self.down,
-                'up': self.up,
-                'ip': self.ip,
-                'ssid': self.ssid,
-                'quality': self.quality
-            }
-            self.full_text = self.cfg.get('format', '%(ssid)s %(quality)s %(ip)s') % params
-        except:
+                params = {
+                    'down': self.down,
+                    'up': self.up,
+                    'ip': self.ip,
+                    'ssid': self.ssid,
+                    'quality': self.quality
+                }
+                self.full_text = self.cfg.get('format', '%(ssid)s %(quality)s %(ip)s') % params
+            else:
+                self.full_text = ''
+        except Exception as e:
+            print(e, file=stderr)
             pass

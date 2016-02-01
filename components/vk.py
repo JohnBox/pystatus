@@ -1,6 +1,7 @@
 from .base import Base
 from tools import cache
 
+from sys import stderr
 import vk
 
 
@@ -29,7 +30,7 @@ class VK(Base):
         self.count = None
         self.refresh()
 
-    @cache.Cache(times=30)
+    @cache.Cache(times=10)
     def refresh(self):
         try:
             messages = API(self.cfg).messages.getDialogs(unread=False)
@@ -48,7 +49,7 @@ class VK(Base):
             else:
                 self.visible = False
         except Exception as e:
-            print(e)
-            self.full_text = ''
+            print(e, file=stderr)
+            pass
 
 
