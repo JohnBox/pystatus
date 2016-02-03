@@ -1,5 +1,5 @@
 from .base import Base
-from subprocess import Popen, PIPE, check_call, DEVNULL
+from subprocess import Popen, PIPE, call, DEVNULL
 
 import re
 
@@ -8,11 +8,11 @@ class CpuTemp(Base):
     def __init__(self, cfg):
         super().__init__(cfg)
         # check installed lm_sensors
-        if check_call('sensors', stdout=DEVNULL) == 0:
+        if call('sensors', stdout=DEVNULL) == 0:
             self.command = ['sensors', '-A', 'coretemp-isa-0000']
             self.temp_re = re.compile('Physical id 0:\W{3}(\d{2})')
         # check installed acpi
-        elif check_call('acpi', stdout=DEVNULL) == 0:
+        elif call('acpi', stdout=DEVNULL) == 0:
             self.command = ['acpi', '-t']
             self.temp_re = re.compile('(\d{1,3})')
         else:
