@@ -1,5 +1,5 @@
 from .base import Base
-from subprocess import Popen, PIPE, check_call, DEVNULL
+from subprocess import Popen, PIPE, call, DEVNULL
 
 import re
 
@@ -8,7 +8,7 @@ class CpuFan(Base):
     def __init__(self, cfg):
         super().__init__(cfg)
         # check installed lm_sensors
-        if check_call('sensors', stdout=DEVNULL) == 0:
+        if call('sensors', stdout=DEVNULL) == 0:
             self.command = ['sensors', '-A']
             chip = self.cfg.get('chip', '')
             if chip:
@@ -23,6 +23,7 @@ class CpuFan(Base):
         self.fan = self.fan_re.search(self.fan).group(1)
         if self.cfg.get('show_thousand', 'False') == 'True':
             self.fan = str(int(self.fan) / 1000) + 'K'
+
         params = {
             'rpm': self.fan
         }
