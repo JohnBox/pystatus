@@ -8,7 +8,10 @@ class Sound(Base):
     def __init__(self, cfg):
         super().__init__(cfg)
         self.volume_re = re.compile('\[(.*?)\]', re.M)
-        self.command = ['amixer', '-c', '0']
+        if check_call('amixer', stdout=DEVNULL) == 0:
+            self.command = ['amixer', '-c', '0']
+        else:
+            raise Exception("Not installed amixer")
         self.refresh()
 
     def refresh(self):
