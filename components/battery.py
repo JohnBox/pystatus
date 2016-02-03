@@ -40,6 +40,7 @@ class Battery(Base):
         if show_only_ac:
             if self.ac == 'off':
                 self.visible = True
+                self.full_text = ''
             else:
                 self.visible = False
         else:
@@ -62,6 +63,5 @@ class Battery(Base):
 
         if self.ac == 'off':
             self.urgent = True
-            self.full_text = ''
         else:
             self.urgent = False
