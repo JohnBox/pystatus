@@ -14,7 +14,7 @@ class CpuTemp(Base):
         # check installed acpi
         elif check_call('acpi', stdout=DEVNULL) == 0:
             self.command = ['acpi', '-t']
-            self.temp_re = re.compile('(\d{2})')
+            self.temp_re = re.compile('(\d{1,3})')
         else:
             raise Exception("Not installed acpi or lm_sensors")
         self.refresh()

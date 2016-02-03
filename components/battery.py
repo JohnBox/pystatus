@@ -22,9 +22,8 @@ class Battery(Base):
         self.status, self.capacity = self.battery[:2]
 
         # remove last percent symbol
-
-        if self.cfg.get('icon_capacity', 'False') == 'True':
-            self.capacity = int(self.capacity[:-1])
+        self.capacity = int(self.capacity[:-1])
+        if self.cfg.get('show_icon', 'False') == 'True':
             self.capacity //= 20
             self.capacity -= 1 if self.capacity > 0 else 0
             self.capacity = Battery.BATTERY[self.capacity]
@@ -54,12 +53,7 @@ class Battery(Base):
         else:
             self.urgent = False
 
-        if self.cfg.get('show_ac', 'False') == 'True':
-            if self.ac == 'off':
-                self.full_text = ''
-                self.visible = True
-            else:
-                self.visible = False
+
 
 
 
