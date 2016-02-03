@@ -6,7 +6,7 @@ from locale import setlocale, LC_TIME
 class Time(Base):
     def __init__(self, cfg):
         super().__init__(cfg)
-        setlocale(LC_TIME, 'uk_UA')
+        setlocale(LC_TIME, cfg.get('locale', 'uk_UA'))
         self.refresh()
 
     def refresh(self):
