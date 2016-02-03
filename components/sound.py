@@ -2,7 +2,6 @@ from .base import Base
 from subprocess import Popen, check_call, PIPE, DEVNULL
 from collections import OrderedDict
 import re
-from time import time
 
 
 class Sound(Base):
@@ -13,7 +12,6 @@ class Sound(Base):
         self.refresh()
 
     def refresh(self):
-        start = time()
         # check plugged usb sound card
         # external = check_call(['amixer', '-c', '1'], stdout=DEVNULL, stderr=DEVNULL, shell=True) == 0
 
@@ -22,8 +20,12 @@ class Sound(Base):
         l = [i.strip() for i in re.split("Simple mixer control '(.*?)',0", snd)]
         d = {k: list(OrderedDict.fromkeys(self.volume_re.findall(v))) for (k, v) in zip(l[1::2], l[2::2])}
 
+        if 'on' in d['Master']:
+            volume = d['Master'][0][:-1]
+        else:
+            volume = '-'
+
         icon = ''
-        volume = d['Master'][0][:-1]
         show_icon = self.cfg.get('show_icon', 'False') == 'True'
         if show_icon:
             if 'on' in d['Speaker']:
