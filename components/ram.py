@@ -16,8 +16,7 @@ class RAM(Base):
         params_name = ['total', 'used', 'free', 'shared', 'buffers', 'cache', 'available']
         # remove line head and replace ',' to '.' in the memory values
         mems = map(lambda m: m.replace(',', '.'), re.split('\s+', mem)[1:])
+
         params = dict(zip(params_name, mems))
-        for p in params:
-            self.__dict__[p] = params[p]
         self.full_text = self.cfg.get('format', '%(used)s/%(total)s') % params
 
