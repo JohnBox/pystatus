@@ -7,12 +7,10 @@ import re
 class Sound(Base):
     def __init__(self, cfg):
         super().__init__(cfg)
+        if call('amixer', stdout=DEVNULL, stderr=DEVNULL) != 0:
+            raise Exception('Not installed amixer')
+        self.Control = namedtuple('Control', 'volume, dB, state')
         self.volume_re = re.compile('\[(.*?)\]', re.M)
-        if call('amixer', stdout=DEVNULL) == 0:
-            self.command = ['amixer', '-c']
-            self.Control = namedtuple('Control', 'volume, dB, state')
-        else:
-            raise Exception("Not installed amixer")
         self.refresh()
 
     def _create_control(self, control_str):
