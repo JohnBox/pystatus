@@ -35,8 +35,7 @@ class VK(Base):
         try:
             messages = API(self.cfg).messages.getDialogs(unread=False)
             self.count = int(messages['count'])
-            self.urgent = False
-            if any(map(lambda i: str(i['message']['user_id']) == self.cfg.get('importantid', ''), messages['items'])):
+            if any(map(lambda i: str(i['message']['user_id']) in self.cfg.get('importantid', '').split(','), messages['items'])):
                 self.urgent = True
 
             params = {
@@ -44,10 +43,12 @@ class VK(Base):
             }
 
             if self.count:
-                self.visible = True
+                # self.visible = True
                 self.full_text = self.cfg.get('format', '+%(count)s') % params
             else:
-                self.visible = False
+                self.full_text = ''
+                pass
+                # self.visible = False
         except Exception as e:
             print(e, file=stderr)
             pass
