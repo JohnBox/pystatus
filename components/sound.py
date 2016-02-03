@@ -23,21 +23,23 @@ class Sound(Base):
         l = [i.strip() for i in re.split("Simple mixer control '(.*?)',0", snd)]
         d = {k: list(OrderedDict.fromkeys(self.volume_re.findall(v))) for (k, v) in zip(l[1::2], l[2::2])}
 
+        show_icon = self.cfg.get('show_icon', 'False') == 'True'
+
         if 'on' in d['Master']:
             volume = d['Master'][0][:-1]
         else:
-            volume = '-'
+            if show_icon:
+                volume = self.cfg.get('mute_icon', '')
+            else:
+                volume = '__'
 
         icon = ''
         show_icon = self.cfg.get('show_icon', 'False') == 'True'
         if show_icon:
-            if 'on' in d['Speaker']:
+            if '100%' in d['Speaker']:
                 icon = self.cfg.get('speaker_icon', '')
-            elif 'on' in d['Headphone']:
+            elif '100%' in d['Headphone']:
                 icon = self.cfg.get('headphone_icon', '')
-            elif 'off' in d['Master']:
-                icon = self.cfg.get('mute_icon', '')
-                volume = ''
 
         params = {
             'volume': volume,
