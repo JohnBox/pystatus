@@ -31,7 +31,7 @@ class Wifi(Base):
                 iwconfig = Popen(['iwconfig', self.cfg.get('interface', 'wlp2s0')], stdout=PIPE).stdout.read().decode().rstrip()
                 self.ssid = self.ssid_re.search(iwconfig).group(1)
                 self.quality = self.quality_re.search(iwconfig).group(1)
-                self.quality = math.floor(eval(self.quality)*len(Wifi.QUALITIES)-1)
+                self.quality = math.floor(round(float(eval(self.quality)), 2) * len(Wifi.QUALITIES))
                 self.quality = Wifi.QUALITIES[self.quality]
 
                 params = {
