@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-from components import time, wifi, sound, cputemp, cpufan, vk, battery, ram
+from components import time, wifi, ethernet, sound, cputemp, cpufan, vk, battery, ram, gmail
 from json import dumps
 from time import sleep
 from sys import stdout
@@ -18,11 +18,13 @@ def main():
     panel['time'] = time.Time(cfg['TIME'])
     panel['battery'] = battery.Battery(cfg['BATTERY'])
     panel['sound'] = sound.Sound(cfg['SOUND'])
-    panel['wifi'] = wifi.Wifi(cfg['WIFI'])
+    # panel['wifi'] = wifi.Wifi(cfg['WIFI'])
+    panel['ethernet'] = ethernet.Ethernet(cfg['ETHERNET'])
     panel['cputemp'] = cputemp.CpuTemp(cfg['CPUTEMP'])
     panel['cpufan'] = cpufan.CpuFan(cfg['CPUFAN'])
     panel['ram'] = ram.RAM(cfg['RAM'])
     panel['vk'] = vk.VK(cfg['VK'])
+    # panel['gmail'] = gmail.Gmail(cfg['GMAIL'])
     while True:
         start = t.time()
         visibled = list(filter(lambda i: i.visible, reversed(panel.values())))
