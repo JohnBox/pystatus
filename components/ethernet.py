@@ -33,7 +33,7 @@ class Ethernet(Base):
                 }
                 self.full_text = self.cfg.get('format', '%(ip)s') % params
             else:
-                self.full_text = ''
+                self.full_text = self.cfg.get('fail', '')
         except Exception as e:
             print(e, file=stderr)
             # pass

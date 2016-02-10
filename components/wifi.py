@@ -32,15 +32,13 @@ class Wifi(Base):
                 self.ssid = self.ssid_re.search(iwconfig).group(1)
                 self.quality = self.quality_re.search(iwconfig).group(1)
                 # quality is str like 'x/y'
-                self.quality = '0.5'
                 self.quality = eval(self.quality) - 0.5
                 self.quality = math.ceil(round(self.quality * 10, 2)) - 1
                 if self.quality < 0:
                     self.quality = abs(self.quality) - 1
-                    self.quality = Wifi.QUALITIES[self.quality]
-                    self.quality = '-' + self.quality
+                    self.quality = '-' + Wifi.QUALITIES[self.quality]
                 else:
-                    self.quality = Wifi.QUALITIES[self.quality]
+                    self.quality = '+' + Wifi.QUALITIES[self.quality]
 
                 params = {
                     'down': self.down,
@@ -51,7 +49,7 @@ class Wifi(Base):
                 }
                 self.full_text = self.cfg.get('format', '%(ssid)s %(quality)s %(ip)s') % params
             else:
-                self.full_text = ''
+                self.full_text = self.cfg.get('fail', '')
         except Exception as e:
             print(e, file=stderr)
             pass
