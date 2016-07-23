@@ -9,7 +9,7 @@ class RAM(Base):
         self.refresh()
 
     def refresh(self):
-        mem = Popen(['free', '-h', '-w', '--si'], stdout=PIPE).stdout
+        mem = Popen(['free', '-h', '--si'], stdout=PIPE).stdout
         mem = Popen(['head', '-2'], stdin=mem, stdout=PIPE).stdout
         mem = Popen(['tail', '-1'], stdin=mem, stdout=PIPE).stdout.read().decode().rstrip()
 
