@@ -1,4 +1,4 @@
-from .base import Base
+from .base import Base as __Base
 from tools import cache
 
 from sys import stderr
@@ -24,7 +24,7 @@ class API(metaclass=Singleton):
         return getattr(self.api, name)
 
 
-class VK(Base):
+class VK(__Base):
     def __init__(self, cfg):
         super().__init__(cfg)
         self.count = None

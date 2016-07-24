@@ -1,4 +1,4 @@
-from .base import Base
+from .base import Base as __Base
 from subprocess import Popen, PIPE
 from sys import stderr
 
@@ -7,7 +7,7 @@ import re
 from time import sleep
 
 
-class Ethernet(Base):
+class Ethernet(__Base):
     QUALITIES = ['E', 'D', 'C', 'B', 'A']
 
     def __init__(self, cfg):

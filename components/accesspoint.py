@@ -1,11 +1,11 @@
-from .base import Base
+from .base import Base as __Base
 from subprocess import Popen, PIPE
 from sys import stderr
 
 import re
 
 
-class AccessPoint(Base):
+class AccessPoint(__Base):
     def refresh(self):
         try:
             ifconfig = Popen(['ifconfig', self.cfg.get('interface', 'ap0')], stdout=PIPE).stdout.read().decode().rstrip()

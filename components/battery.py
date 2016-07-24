@@ -1,4 +1,4 @@
-from .base import Base
+from .base import Base as __Base
 from subprocess import Popen, call, PIPE, DEVNULL
 from collections import namedtuple
 
@@ -6,7 +6,7 @@ import re
 import string
 
 
-class Battery(Base):
+class Battery(__Base):
     BATTERY = ['', '', '', '', '']
 
     def __init__(self, cfg):

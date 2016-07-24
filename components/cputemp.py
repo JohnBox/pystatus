@@ -1,10 +1,10 @@
-from .base import Base
+from .base import Base as __Base
 from subprocess import Popen, PIPE, call, DEVNULL
 
 import re
 
 
-class CpuTemp(Base):
+class CpuTemp(__Base):
     def __init__(self, cfg):
         super().__init__(cfg)
         # check installed lm_sensors

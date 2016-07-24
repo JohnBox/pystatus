@@ -1,10 +1,10 @@
-from .base import Base
+from .base import Base as __Base
 from subprocess import Popen, call, PIPE, DEVNULL
 from collections import OrderedDict, namedtuple
 import re
 
 
-class Sound(Base):
+class Sound(__Base):
     def __init__(self, cfg):
         super().__init__(cfg)
         if call('amixer', stdout=DEVNULL, stderr=DEVNULL) != 0:

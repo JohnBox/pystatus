@@ -1,9 +1,9 @@
-from .base import Base
+from .base import Base as __Base
 from subprocess import Popen, PIPE
 import re
 
 
-class RAM(Base):
+class RAM(__Base):
     def __init__(self, cfg):
         super().__init__(cfg)
         self.refresh()
