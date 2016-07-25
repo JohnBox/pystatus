@@ -13,6 +13,9 @@ class Base:
         self.min_width = ' ' * 10
         self.align = 'center'
         self.urgent = False
+        self.urgent_color = cfg.get('urgent_color', '#EEEEEE')
+        self.urgent_background = cfg.get('urgent_background', '#111111')
+        self.urgent_border = cfg.get('urgent_border', '#111111')
         self.separator = True
         self.separator_block_width = 9
         self.visible = True
@@ -34,6 +37,10 @@ class Base:
                 obj[k] = '\u00A0' + getattr(self, k) + '\u00A0'
             else:
                 obj[k] = getattr(self, k)
+        if self.urgent:
+            obj.update({'color': self.urgent_color})
+            obj.update({'background': self.urgent_background})
+            obj.update({'border': self.urgent_border})
         return dumps(obj)
 
     def __repr__(self):
