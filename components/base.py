@@ -8,8 +8,8 @@ class Base:
         self.full_text = '***'
         self.short_text = '*'
         self.color = cfg.get('color', '#EEEEEE')
-        self.background = '#000000'
-        self.border = '#888888'
+        self.background = '#666666'
+        self.border = '#FFFFFF'
         self.min_width = 10
         self.align = 'center'
         self.urgent = False
@@ -30,7 +30,10 @@ class Base:
         ]
         obj = {}
         for k in print_fields:
-            obj[k] = getattr(self, k)
+            if k in ['full_text']:
+                obj[k] = '\u00A0' + getattr(self, k) + '\u00A0'
+            else:
+                obj[k] = getattr(self, k)
         return dumps(obj)
 
     def __repr__(self):
