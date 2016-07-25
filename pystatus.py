@@ -1,38 +1,34 @@
-#!/usr/bin/env python
-from components import time, wifi, ethernet, sound, cputemp, cpufan, vk, battery, ram
+#!/usr/bin/env python3
+import components
+from tools import config as config_parser
 from json import dumps
-from time import sleep
 from sys import stdout
-from collections import OrderedDict
+import time
 
-from tools import parser
-import time as t
 
 def main():
-    cfg = parser.parse('./pystatus.ini')
+    config = config_parser.parse()
     VERSION = {'version': 1}
     print(dumps(VERSION))
-    # print('[')
-    interval = float(cfg['PYSTATUS'].get('refresh', '1'))
-    panel = OrderedDict()
-    panel['time'] = time.Time(cfg['TIME'])
-    panel['battery'] = battery.Battery(cfg['BATTERY'])
-    panel['sound'] = sound.Sound(cfg['SOUND'])
-    # panel['wifi'] = wifi.Wifi(cfg['WIFI'])
-    # panel['ethernet'] = ethernet.Ethernet(cfg['ETHERNET'])
-    panel['cputemp'] = cputemp.CpuTemp(cfg['CPUTEMP'])
-    # panel['cpufan'] = cpufan.CpuFan(cfg['CPUFAN'])
-    panel['ram'] = ram.RAM(cfg['RAM'])
-    # panel['vk'] = vk.VK(cfg['VK'])
-    # panel['gmail'] = gmail.Gmail(cfg['GMAIL'])
+    print('[')
+    interval = float(config['PYSTATUS'].get('refresh', 1.0))
+    components_cfg = config.sections()[:]
+    components_cfg.remove('PYSTATUS')
+    panel = []
+    for cfg in components_cfg:
+        try:
+            component = getattr(components, cfg.upper())
+            panel.append(component(config[cfg]))
+        except:
+            pass
+    panel.reverse()
     while True:
-        start = t.time()
-        visibled = list(filter(lambda i: i.visible, reversed(list(panel.values()))))
+        start = time.time()
+        visibled = list(filter(lambda i: i.visible, panel))
         print(visibled, end=',\n')
-        list(map(lambda i: i.refresh(), panel.values()))
-        late = t.time() - start
-
-        sleep((interval - late) if (interval - late) > 0 else interval)
+        map(lambda i: i.refresh(), panel)
+        late = time.time() - start
+        time.sleep((interval - late) if (interval - late) > 0 else interval)
         stdout.flush()
 
 if __name__ == '__main__':
